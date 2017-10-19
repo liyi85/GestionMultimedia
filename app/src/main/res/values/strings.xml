@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GestionMultimedia</string>
+    <string name="usuario">Nombre de Usuario</string>
+    <string name="correo">usuario@nextuniversity.com</string>
+    <string name="animacion">Animación</string>
+    <string name="graficos">Gráficos</string>
+    <string name="imagen">Imagen</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
+    <string name="titulo">Media Cloud</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
