@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class GraficosFragment extends Fragment {
-
+public class AudioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_graficos, container, false);
+        return inflater.inflate(R.layout.fragment_audio, container, false);
     }
 
     @Override
@@ -26,20 +25,10 @@ public class GraficosFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (getActivity() instanceof MainActivity) {
             MainActivity activity = (MainActivity) getActivity();
-            activity.updateView(getString(R.string.titulo), (getString(R.string.graficos)));
-            activity.navigationView.setCheckedItem(R.id.nav_graficos);
+            activity.updateView(getString(R.string.titulo), (getString(R.string.audio)));
+            activity.navigationView.setCheckedItem(R.id.nav_audio);
         }
     }
 
-    /**private GLSurfaceView lienzo;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        lienzo = new GLSurfaceView(getContext());
-        lienzo.setRenderer(new MyRenderer(getContext()));
-
-        getActivity().setContentView(lienzo);
-    }*/
 }
+

@@ -1,8 +1,11 @@
 package com.example.andrearodriguez.gestionmultimedia;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +18,12 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity
                         implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final int REQUEST_CODE = 1;
+
+    private static final String[] PERMISOS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     LinearLayout linearLayout;
@@ -22,6 +31,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int leer = ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if(leer == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, PERMISOS, REQUEST_CODE);
+        }
+
         setContentView(R.layout.activity_main);
 
         getSupportFragmentManager().beginTransaction()
@@ -74,11 +90,11 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_imagenes:
-                //fragment = new ImagenFragment();
+                fragment = new ImagenFragment();
                 break;
 
             case R.id.nav_audio:
-                //fragment = new AudioFragment();
+                fragment = new AudioFragment();
                 break;
 
             case R.id.nav_video:

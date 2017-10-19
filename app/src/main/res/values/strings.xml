@@ -14,4 +14,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_archivo">Ruta: ningún archivo seleccionado.</string>
+    <string name="abrir">ABRIR</string>
+    <string name="capturar">CAPTURAR</string>
+    <string name="reproducir_audio">REPRODUCIR AUDIO</string>
 </resources>
