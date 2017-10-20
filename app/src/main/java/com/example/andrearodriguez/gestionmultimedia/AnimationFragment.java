@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 public class AnimationFragment extends Fragment {
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,5 +32,15 @@ public class AnimationFragment extends Fragment {
             activity.navigationView.setCheckedItem(R.id.nav_animation);
         }
     }
+
+
+    /*public void onClickPlay(View view) {
+        ImageView imageView = (ImageView) getActivity().findViewById(R.id.image_storage);
+
+        AnimatorSet animatorSet = (AnimatorSet) AnimatorInflater
+                .loadAnimator(this.getActivity(), R.animator.animation_star);
+        animatorSet.setTarget(imageView);
+        animatorSet.start();
+    }*/
 
 }
