@@ -19,11 +19,6 @@ public class AnimationFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getActivity() instanceof MainActivity) {
@@ -32,15 +27,4 @@ public class AnimationFragment extends Fragment {
             activity.navigationView.setCheckedItem(R.id.nav_animation);
         }
     }
-
-
-    /*public void onClickPlay(View view) {
-        ImageView imageView = (ImageView) getActivity().findViewById(R.id.image_storage);
-
-        AnimatorSet animatorSet = (AnimatorSet) AnimatorInflater
-                .loadAnimator(this.getActivity(), R.animator.animation_star);
-        animatorSet.setTarget(imageView);
-        animatorSet.start();
-    }*/
-
 }

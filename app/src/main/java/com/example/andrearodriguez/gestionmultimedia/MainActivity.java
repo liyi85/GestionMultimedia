@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+
 public class MainActivity extends AppCompatActivity
                         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     LinearLayout linearLayout;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null)
             navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -120,4 +126,5 @@ public class MainActivity extends AppCompatActivity
         moon.startAnimation(animation);
 
     }
+
 }

@@ -56,7 +56,7 @@ public class Cubo {
     }
 
     public void dibujar(GL10 gl){
-        gl.glFrontFace(GL10.GL_CCW);
+        gl.glFrontFace(GL10.GL_CW);
         gl.glEnable(GL10.GL_CULL_FACE);
         gl.glCullFace(GL10.GL_BACK);
 
