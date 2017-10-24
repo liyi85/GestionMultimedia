@@ -18,4 +18,6 @@
     <string name="abrir">ABRIR</string>
     <string name="capturar">CAPTURAR</string>
     <string name="reproducir_audio">REPRODUCIR AUDIO</string>
+    <string name="detener">DETENER REPRODUCCION</string>
+
 </resources>

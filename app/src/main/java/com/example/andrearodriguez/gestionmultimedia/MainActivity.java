@@ -13,9 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 
@@ -118,13 +115,6 @@ public class MainActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void onClickPlay(View view) {
-        View moon = findViewById(R.id.image_storage);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_start);
-        moon.startAnimation(animation);
-
     }
 
 }
