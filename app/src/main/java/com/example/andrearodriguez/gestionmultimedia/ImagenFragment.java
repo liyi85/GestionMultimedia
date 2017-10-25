@@ -35,9 +35,6 @@ public class ImagenFragment extends Fragment {
 
     private static final int REQUEST_CODE = 1;
 
-    public ImagenFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,9 +48,9 @@ public class ImagenFragment extends Fragment {
         }
 
         imgCamara = (ImageView) view.findViewById(R.id.image_storage);
-        rutaImagen = (TextView) view.findViewById(R.id.txt_ruta);
+        rutaImagen = (TextView) view.findViewById(R.id.txt_ruta_imagen);
 
-        view.findViewById(R.id.btn_abrir)
+        view.findViewById(R.id.btn_abrir_imagen)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -62,7 +59,7 @@ public class ImagenFragment extends Fragment {
                     }
                 });
 
-        view.findViewById(R.id.btn_capturar)
+        view.findViewById(R.id.btn_capturar_imagen)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -144,7 +141,7 @@ public class ImagenFragment extends Fragment {
             MainActivity activity = (MainActivity) getActivity();
             activity.updateView(getString(R.string.titulo), (getString(R.string.imagen)));
             activity.navigationView.setCheckedItem(R.id.nav_imagenes);
-
+            activity.onBackPressed();
         }
     }
 

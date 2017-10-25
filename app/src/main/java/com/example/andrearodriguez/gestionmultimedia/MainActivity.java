@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     LinearLayout linearLayout;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +50,6 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null)
             navigationView.setNavigationItemSelectedListener(this);
-
-
     }
 
     @Override
@@ -79,8 +74,8 @@ public class MainActivity extends AppCompatActivity
                 R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
-
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -116,5 +111,4 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

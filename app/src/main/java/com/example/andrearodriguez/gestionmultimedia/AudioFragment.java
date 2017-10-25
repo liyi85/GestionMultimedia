@@ -8,6 +8,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,142 +21,33 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import static android.app.Activity.RESULT_OK;
-
+/**
+ * Created by ronald on 4/10/17.
+ */
 
 public class AudioFragment extends Fragment {
 
-    static final int Pick_song=1;
     private static final int REQUEST_CODE=1;
     private static final String[] PERMISOS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO
     };
 
-    private Button abrir;
-    private Button grabar;
-    private Button reproducir;
-    private TextView ruta;
+    private Button btnAbrir;
+    private Button btnGrabar;
+    private Button btnReproducir;
+    TextView txtRuta;
 
-    private static String nombreAudio = null;
+    MediaPlayer audio = null;
     private MediaRecorder mediaRecorder = null;
-    private MediaPlayer mediaPlayer = null;
-    private MediaPlayer audio = null;
+    String path, nombreAudio;
 
     boolean verificacion = true;
     boolean verificacion2 = true;
-    boolean verificacion3 = true;
 
-    private int x=0;
-
-    private void limpiarAudio(){
-        if (audio != null){
-            audio.release();
-            audio = null;}
-    }
-
-    private void limpiarMedia(){
-        if (mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;}
-    }
-
-    private void limpiarRecorder(){
-        if (mediaRecorder != null){
-            mediaRecorder.release();
-            mediaRecorder = null;
-        }
-    }
-
-    private void comenzarGrabacion(){
-        limpiarMedia();
-        limpiarAudio();
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(nombreAudio);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try{
-            mediaRecorder.prepare();
-        }catch(IOException e){
-            Toast.makeText(getActivity(), "No se grabará correctamente", Toast.LENGTH_SHORT).show();
-        }
-        mediaRecorder.start();
-    }
-
-    private void detenerGrabacion(){
-        limpiarAudio();
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
-        Toast.makeText(getActivity(), "Se ha guardado el audio en:\n" + Environment.getExternalStorageDirectory() + "/audio.3gp", Toast.LENGTH_LONG).show();
-    }
-
-    private void grabando(boolean comenzado){
-        limpiarAudio();
-        if (comenzado){
-            comenzarGrabacion();
-        }else{
-            detenerGrabacion();
-        }
-    }
-
-    private void comenzarReproduccion(String ruta){
-        limpiarAudio();
-        mediaPlayer = new MediaPlayer();
-        try{
-            mediaPlayer.setDataSource(ruta);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        }catch(IOException e){
-            Toast.makeText(getActivity(), "Ha ocurrido un error en la reproducción"+ ruta, Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void comenzarReproduccionMemoria(String ruta){
-        limpiarMedia();
-        audio = new MediaPlayer();
-        try{
-            audio.setDataSource(getActivity().getApplicationContext(), Uri.parse(ruta));
-            audio.prepare();
-            audio.start();
-        }catch(IOException e){
-            Toast.makeText(getActivity(), "Ha ocurrido un error en la reproducción"+ ruta, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void detenerReproduccion(){
-        mediaPlayer.release();
-        mediaPlayer = null;
-    }
-
-    private void detenerReproduccionMemoria(){
-        audio.release();
-        audio = null;
-    }
-
-    private void onPlay(boolean comenzarRep){
-        limpiarAudio();
-        if (comenzarRep){
-            comenzarReproduccion(nombreAudio);
-        }else{
-            detenerReproduccion();
-        }
-    }
-
-    private void onPlayMemoria(boolean comenzarRep, String data){
-        limpiarMedia();
-        if (comenzarRep){
-            comenzarReproduccionMemoria(data);
-        }else{
-            detenerReproduccionMemoria();
-        }
-    }
-
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
 
         int leer = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -165,92 +57,147 @@ public class AudioFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),PERMISOS,REQUEST_CODE);
         }
 
-        abrir = view.findViewById(R.id.btn_abrir_audio);
-        grabar = view.findViewById(R.id.btn_capturar_audio);
-        reproducir = view.findViewById(R.id.btn_reproducir_audio);
-        ruta = view.findViewById(R.id.txt_ruta_audio);
-        nombreAudio = Environment.getExternalStorageDirectory() + "/audio.3gp";
+        btnAbrir = (Button) view.findViewById(R.id.btn_abrir_audio);
+        btnReproducir = (Button) view.findViewById(R.id.btn_reproducir_audio);
+        btnGrabar = (Button) view.findViewById(R.id.btn_capturar_audio);
+        txtRuta = (TextView) view.findViewById(R.id.txt_ruta_audio);
+        nombreAudio = Environment.getExternalStorageDirectory() + "/grabacion.m4a";
 
-
-        abrir.setOnClickListener(new View.OnClickListener() {
+        btnAbrir.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                limpiarMedia();
-                Intent intent = new Intent();
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("audio/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Selecciona un audio"),Pick_song);
+                startActivityForResult(Intent.createChooser(intent, "Selecciona un audio"), 1);
             }
         });
 
-        grabar.setOnClickListener(new View.OnClickListener() {
+        btnReproducir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                grabando(verificacion);
-                    if (verificacion) {
-                        grabar.setText("Detener Grabación");
-                    } else {
-                        grabar.setText("Iniciar Grabación");
-                    }
-                    verificacion = !verificacion;
+                onPlay (verificacion);
             }
         });
 
-        reproducir.setOnClickListener(new View.OnClickListener() {
+        btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPlay(verificacion2);
-                if (verificacion2){
-                    reproducir.setText("Detener reproducción");
-                }else{
-                    reproducir.setText("Reproducir");
-                }
-                verificacion2 = !verificacion2;
+                grabando(verificacion2);
             }
         });
 
         return view;
     }
 
+    public void grabando (boolean verificacion2){
+        if (verificacion2) {
+            comenzarGrabacion();
+        } else {
+            detenerGrabacion();
+        }
+    }
+
+    public void comenzarGrabacion(){
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(nombreAudio);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "No se grabará correctamente", Toast.LENGTH_SHORT).show();
+        }
+
+        mediaRecorder.start();
+        Toast.makeText(getActivity(), "Grabando audio...", Toast.LENGTH_SHORT).show();
+        verificacion2 = !verificacion2;
+        btnGrabar.setText(R.string.detener_grabacion);
+    }
+
+    public void detenerGrabacion(){
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder = null;
+
+        btnGrabar.setText(R.string.iniciar_grabacion);
+        txtRuta.setText(nombreAudio);
+        verificacion2 = !verificacion2;
+        Toast.makeText(getActivity(), "Se guardó el audio correctamente", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void onPlay (boolean verificacion) {
+        if (!verificacion){
+            btnReproducir.setText(R.string.reproducir_audio);
+            detenerReproduccion();
+        } else {
+            btnReproducir.setText(R.string.detener_reproduccion);
+            comenzarReproduccion();
+        }
+    }
+
+    public void comenzarReproduccion(){
+        verificacion = !verificacion;
+
+        try {
+            audio = new MediaPlayer();
+            audio.setDataSource(getActivity().getApplicationContext(), Uri.parse(txtRuta.getText().toString()));
+
+            audio.prepare();
+            audio.start();
+
+            audio.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer audio) {
+                    btnReproducir.setText(R.string.reproducir_audio);
+                    Toast.makeText(getActivity(), "Audio finalizado", Toast.LENGTH_SHORT).show();
+                    verificacion = !verificacion;
+                }
+            });
+
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "Error al reproducir audio", Toast.LENGTH_SHORT).show();;
+            btnReproducir.setText(R.string.reproducir_audio);
+            verificacion = !verificacion;
+        }
+    }
+
+    public void detenerReproduccion(){
+        audio.release();
+        audio = null;
+        verificacion = !verificacion;
+        Toast.makeText(getActivity(), "Audio detenido", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        limpiarMedia();
-        switch (requestCode) {
-            case Pick_song:
-                if (resultCode == RESULT_OK) {
-                    final String patch = data.getDataString();
-                    onPlayMemoria(verificacion3, patch);
-                    if(audio.isPlaying()){
-                        reproducir.setText("Detener reproducción");
-                        verificacion3 = false;
-                    }
-                    try {
-                        reproducir.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (verificacion3==true){
-                                    audio.seekTo(x);
-                                    audio.start();
-                                    reproducir.setText("Detener reproducción");
 
-                                }else{
-                                    reproducir.setText("Reproducir");
-                                    audio.pause();
-                                    x = audio.getCurrentPosition();
-                                }
-                                verificacion3 = !verificacion3;
-                            }
-                        });
+        if (requestCode == 1 && resultCode == getActivity().RESULT_OK) {
+            path = data.getDataString();
+            txtRuta.setText(path);
 
-                        } catch (Exception e) {
-                            Toast.makeText(getActivity(), "Erro al ejecutar el audio", Toast.LENGTH_SHORT).show();
+            onPlay (verificacion);
+        }
+    }
 
-                        }
-                    }
-                }
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mediaRecorder != null){
+            mediaRecorder.release();
+            mediaRecorder = null;
+        }
+
+        if (audio != null){
+            audio.release();
+            audio = null;
+        }
     }
 
     @Override
@@ -260,15 +207,7 @@ public class AudioFragment extends Fragment {
             MainActivity activity = (MainActivity) getActivity();
             activity.updateView(getString(R.string.titulo), (getString(R.string.audio)));
             activity.navigationView.setCheckedItem(R.id.nav_audio);
+            activity.onBackPressed();
         }
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        limpiarRecorder();
-        limpiarMedia();
-        limpiarAudio();
-    }
 }
-

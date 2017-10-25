@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.widget.MediaController;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -36,9 +36,6 @@ public class VideoFragment extends Fragment {
     private Uri videoUri;
 
     private static final int REQUEST_CODE = 1;
-
-    public VideoFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,16 +80,6 @@ public class VideoFragment extends Fragment {
                 });
 
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() instanceof MainActivity) {
-            MainActivity activity = (MainActivity) getActivity();
-            activity.updateView(getString(R.string.titulo), (getString(R.string.video)));
-            activity.navigationView.setCheckedItem(R.id.nav_video);
-        }
     }
 
     @Override
@@ -148,6 +135,17 @@ public class VideoFragment extends Fragment {
                 }
 
             }
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity) getActivity();
+            activity.updateView(getString(R.string.titulo), (getString(R.string.video)));
+            activity.navigationView.setCheckedItem(R.id.nav_video);
+            activity.onBackPressed();
         }
     }
 }

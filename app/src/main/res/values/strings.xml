@@ -12,12 +12,13 @@
     <string name="close_drawer">Close navigation drawer</string>
     <string name="titulo">Media Cloud</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_archivo">Ruta: ningún archivo seleccionado.</string>
     <string name="abrir">ABRIR</string>
     <string name="capturar">CAPTURAR</string>
     <string name="reproducir_audio">REPRODUCIR AUDIO</string>
     <string name="detener">DETENER REPRODUCCION</string>
+    <string name="detener_grabacion">DETENER GRABACIÓN</string>
+    <string name="iniciar_grabacion">INICIAR GRABACIÓN</string>
+    <string name="detener_reproduccion">DETENER REPRODUCCION</string>
 
 </resources>

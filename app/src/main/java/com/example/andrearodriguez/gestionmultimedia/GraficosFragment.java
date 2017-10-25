@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 
 public class GraficosFragment extends Fragment {
 
-    public GraficosFragment() {
-    }
-
     private GLSurfaceView lienzo;
 
     @Override
@@ -27,7 +24,6 @@ public class GraficosFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -35,8 +31,7 @@ public class GraficosFragment extends Fragment {
             MainActivity activity = (MainActivity) getActivity();
             activity.updateView(getString(R.string.titulo), (getString(R.string.graficos)));
             activity.navigationView.setCheckedItem(R.id.nav_graficos);
-
+            activity.onBackPressed();
         }
     }
-
 }
